@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import com.store_phone.common.Constants;
@@ -26,9 +27,11 @@ import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.user.UserInfo;
 import com.store_phone.service.RoleService;
-import com.store_phone.service.UserService;	
+import com.store_phone.service.UserService;
+import com.store_phone.utils.PasswordUtils;	
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService{
 
 	@Autowired
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService{
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUserName(request.getUserName());
 		// nhớ mã hóa password nhé
-		userDTO.setPassword(request.getPassword());
+		userDTO.setPassword(PasswordUtils.generatePassword(request.getPassword()));
 		userDTO.setFullName(request.getFullName());
 		userDTO.setAddress(request.getAddress());
 		userDTO.setPhoneNumber(request.getPhone());
@@ -95,7 +98,8 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 	
-	private UserDTO findByUserName(String userName) {
+	@Override
+	public UserDTO findByUserName(String userName) {
 		UserEntity userEntity = userRepository.findById(userName).orElse(null);
 		return userConverter.convertToDto(userEntity);
 	}

@@ -1,9 +1,13 @@
 package com.store_phone.controller;
 
+import javax.naming.AuthenticationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -48,5 +52,21 @@ public class AdviceController {
 		result.setCode(exception.getErrorCode());
 		result.setMessage(exception.getErrorMessage());
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(result);
+	}
+	
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<BaseResponse> handleUsernameNotFoundException (UsernameNotFoundException exception) {
+		BaseResponse result = new BaseResponse();
+		result.setCode(HttpStatus.UNAUTHORIZED.name());
+		result.setMessage(exception.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+	}
+	
+	@ExceptionHandler(AuthorizationDeniedException.class)
+	public ResponseEntity<BaseResponse> handleAccessDeniedException (AuthorizationDeniedException exception) {
+		BaseResponse result = new BaseResponse();
+		result.setCode(HttpStatus.UNAUTHORIZED.name());
+		result.setMessage(exception.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 	}
 }

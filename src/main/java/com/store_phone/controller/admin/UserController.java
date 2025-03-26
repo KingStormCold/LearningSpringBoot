@@ -1,11 +1,10 @@
-package com.store_phone.controller;
-
-import java.util.List;
+package com.store_phone.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +30,10 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping(value = "/v1/users")
+//	@PreAuthorize("hasRole('ADMIN')") One role only
+//	@PreAuthorize("hasAnyRole('ADMIN', 'ADMIN_USER')") Multiple roles
+//	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')") If roles are stored with "ROLE_" prefix
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
 	public ResponseEntity<CommonResponse<ResultDataPaging<UserInfo>>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(new CommonResponse<>(userService.findAll(pageable)));
 	}
@@ -41,6 +44,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/v1/user/{userName}")
+	@PreAuthorize("hasAuthority('ADMIN_PR')")
 	public ResponseEntity<CommonResponse<UserInfo>> findByUsername(@PathVariable("userName") String userName) {
 		UserDTO userDTO = userService.getInfoUser(userName);
 		UserInfo userInfo = new UserInfo(userDTO);
