@@ -1,4 +1,4 @@
-package com.store_phone.controller;
+package com.store_phone.controller.admin;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

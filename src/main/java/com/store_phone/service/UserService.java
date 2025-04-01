@@ -19,4 +19,6 @@ public interface UserService {
 	UserDTO updateUser(UpdateUserRequest request);
 	
 	void deleteUser(String userName);
+	
+	UserDTO findByUserName(String userName);
 }

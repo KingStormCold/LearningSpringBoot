@@ -1,4 +1,4 @@
-package com.store_phone.controller;
+package com.store_phone.controller.admin;
 
 import java.util.List;
 

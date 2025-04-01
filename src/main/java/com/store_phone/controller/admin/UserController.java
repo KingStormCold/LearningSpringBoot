@@ -1,17 +1,17 @@
-package com.store_phone.controller;
-
-import java.util.List;
+package com.store_phone.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.store_phone.dto.UserDTO;
@@ -30,16 +30,25 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+//	@PreAuthorize("hasRole('ADMIN')") One role only
+//	@PreAuthorize("hasAnyRole('ADMIN', 'ADMIN_USER')") Multiple roles
+//	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')") If roles are stored with "ROLE_" prefix
+	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
 	@GetMapping(value = "/v1/users")
 	public ResponseEntity<CommonResponse<ResultDataPaging<UserInfo>>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(new CommonResponse<>(userService.findAll(pageable)));
 	}
 	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
 	@PostMapping(value = "/v1/users")
-	public ResponseEntity<CommonResponse<UserDTO>> addUser(@Valid @RequestBody AddUserRequest request){
-		return ResponseEntity.ok(new CommonResponse<>(userService.addUser(request)));
+	public ResponseEntity<CommonResponse<UserInfo>> addUser(@Valid @RequestBody AddUserRequest request){
+		UserDTO userDTO = userService.addUser(request);
+		UserInfo userInfo = new UserInfo(userDTO);
+		return ResponseEntity.ok(new CommonResponse<>(userInfo));
 	}
 	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
 	@GetMapping(value = "/v1/user/{userName}")
 	public ResponseEntity<CommonResponse<UserInfo>> findByUsername(@PathVariable("userName") String userName) {
 		UserDTO userDTO = userService.getInfoUser(userName);
@@ -47,6 +56,7 @@ public class UserController {
 		return ResponseEntity.ok(new CommonResponse<>(userInfo));
 	}
 	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
 	@PutMapping(value = "/v1/users")
 	public ResponseEntity<CommonResponse<UserInfo>> updateUser(@Valid @RequestBody UpdateUserRequest request){
 		UserDTO userDTO = userService.updateUser(request);
@@ -54,6 +64,7 @@ public class UserController {
 		return ResponseEntity.ok(new CommonResponse<>(userInfo));
 	}
 	
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
 	@DeleteMapping(value = "/v1/user/{userName}")
 	public ResponseEntity<?> deleteByUserName(@PathVariable("userName") String userName){
 		userService.deleteUser(userName);

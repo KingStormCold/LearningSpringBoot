@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import com.store_phone.common.Constants;
@@ -25,10 +26,14 @@ import com.store_phone.request.user.UpdateUserRequest;
 import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.user.UserInfo;
+import com.store_phone.security.JwtUtil;
 import com.store_phone.service.RoleService;
-import com.store_phone.service.UserService;	
+import com.store_phone.service.UserService;
+import com.store_phone.utils.PasswordUtils;
+import com.store_phone.utils.SecurityUtils;	
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService{
 
 	@Autowired
@@ -63,13 +68,14 @@ public class UserServiceImpl implements UserService{
 		}
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUserName(request.getUserName());
-		// nhớ mã hóa password nhé
-		userDTO.setPassword(request.getPassword());
+		
+		userDTO.setPassword(PasswordUtils.generatePassword(request.getPassword()));
 		userDTO.setFullName(request.getFullName());
 		userDTO.setAddress(request.getAddress());
 		userDTO.setPhoneNumber(request.getPhone());
 		userDTO.setEmail(request.getEmail());
 		userDTO.setActive(true);
+		userDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin());
 		UserEntity userEntity = userConverter.convertToEntity(userDTO);
 		userRepository.save(userEntity);
 		
@@ -95,7 +101,8 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 	
-	private UserDTO findByUserName(String userName) {
+	@Override
+	public UserDTO findByUserName(String userName) {
 		UserEntity userEntity = userRepository.findById(userName).orElse(null);
 		return userConverter.convertToDto(userEntity);
 	}
@@ -112,7 +119,7 @@ public class UserServiceImpl implements UserService{
 		userDTO.setPhoneNumber(request.getPhone());
 		userDTO.setEmail(request.getEmail());
 		userDTO.setActive(request.isActive());
-		
+		userDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
 		UserEntity userEntity = userConverter.convertToEntity(userDTO);
 		userRepository.save(userEntity);
 		
@@ -150,6 +157,7 @@ public class UserServiceImpl implements UserService{
 			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy username");
 		}
 		userDTO.setActive(false);
+		userDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
 		UserEntity userEntity = userConverter.convertToEntity(userDTO);
 		userRepository.save(userEntity);
 		
