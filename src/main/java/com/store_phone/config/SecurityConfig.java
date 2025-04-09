@@ -54,7 +54,9 @@ public class SecurityConfig {
 			.disable()
 			.authorizeHttpRequests(auth -> auth
 					.requestMatchers("/api/login", "/api/logout").permitAll()
-//					.requestMatchers("/v1/user**").hasAuthority("ADMIN_CATEGORY")
+					.requestMatchers("/v1/category/**").hasAuthority("ADMIN_CATEGORY")
+					.requestMatchers("/v1/user/**").hasAuthority("ADMIN_CATEGORY")
+					.requestMatchers("/v1/roles/**").hasAuthority("ADMIN_CATEGORY")
 					.anyRequest().authenticated()
 				)
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

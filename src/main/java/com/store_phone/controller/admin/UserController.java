@@ -35,13 +35,13 @@ public class UserController {
 //	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')") If roles are stored with "ROLE_" prefix
 	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
-	@GetMapping(value = "/v1/users")
+	@GetMapping(value = "/v1/user")
 	public ResponseEntity<CommonResponse<ResultDataPaging<UserInfo>>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(new CommonResponse<>(userService.findAll(pageable)));
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
-	@PostMapping(value = "/v1/users")
+	@PostMapping(value = "/v1/user/findAll")
 	public ResponseEntity<CommonResponse<UserInfo>> addUser(@Valid @RequestBody AddUserRequest request){
 		UserDTO userDTO = userService.addUser(request);
 		UserInfo userInfo = new UserInfo(userDTO);
@@ -57,7 +57,7 @@ public class UserController {
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
-	@PutMapping(value = "/v1/users")
+	@PutMapping(value = "/v1/user/update")
 	public ResponseEntity<CommonResponse<UserInfo>> updateUser(@Valid @RequestBody UpdateUserRequest request){
 		UserDTO userDTO = userService.updateUser(request);
 		UserInfo userInfo = new UserInfo(userDTO);

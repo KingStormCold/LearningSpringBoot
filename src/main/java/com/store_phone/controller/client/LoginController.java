@@ -40,6 +40,6 @@ public class LoginController {
             httpHeaders.add(JwtUtil.AUTHORIZATION_HEADER, "Bearer " + jwt);
             return new ResponseEntity<>(new AuthenticateResponse(jwt), httpHeaders, HttpStatus.OK);
         }
-        throw new UsernameNotFoundException("username hoặc password không đúng.");
+        throw new UsernameNotFoundException("username hoặc password không đúng. Throw");
     }
 }
