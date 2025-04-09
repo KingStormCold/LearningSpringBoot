@@ -3,19 +3,12 @@ package com.store_phone.dto;
 import java.util.Set;
 
 public class UserDTO extends BaseDTO {
-	
 	private String userName;
-
     private String password;
-
     private String fullName;
-
     private String email;
-
     private String phoneNumber;
-
     private String address;
-
     private boolean active;
 
     private Set<RoleDTO> roles;

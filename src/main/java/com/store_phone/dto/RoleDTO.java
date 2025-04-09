@@ -3,15 +3,10 @@ package com.store_phone.dto;
 import java.util.Set;
 
 public class RoleDTO {
-	
 	private String roleId;
-
     private String roleName;
-
     private String roleDescription;
-
     private Set<UserDTO> users;
-
 	public String getRoleId() {
 		return roleId;
 	}

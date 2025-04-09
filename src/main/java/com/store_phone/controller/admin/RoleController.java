@@ -33,8 +33,8 @@ public class RoleController {
 	
 	//1. lấy tất cả roles theo phân trang
 	//2. pageSize(số lượng phần tử trên 1 trang), pageNumbe(trang)
-	@GetMapping(value = "/v1/roles")
-	public ResponseEntity<CommonResponse<List<RoleDTO>>> findAll(Pageable pageable) {
+	@GetMapping(value = "/v1/roles/findAll")
+	public ResponseEntity<CommonResponse<List<RoleDTO>>> findAll() {
 		return ResponseEntity.status(HttpStatus.OK).body(new CommonResponse<>(roleService.findAll()));
 	}
 	
@@ -50,19 +50,19 @@ public class RoleController {
 	}
 	
 	//3. thêm role
-	@PostMapping(value = "/v1/roles")
+	@PostMapping(value = "/v1/roles/add")
 	public ResponseEntity<CommonResponse<RoleDTO>> addRole(@Valid @RequestBody AddRoleRequest request) {
 		return ResponseEntity.status(HttpStatus.OK).body(new CommonResponse<>(roleService.addRole(request)));
 	}
 	
 	//4. update role, cần thêm id
-	@PutMapping(value = "/v1/roles")
+	@PutMapping(value = "/v1/roles/update")
 	public ResponseEntity<CommonResponse<RoleDTO>> updateRole(@Valid @RequestBody UpdateRoleRequest request) {
 		return ResponseEntity.status(HttpStatus.OK).body(new CommonResponse<>(roleService.updateRole(request)));
 	}
 	
 	//5. delete, cần thêm id
-	@DeleteMapping(value = "/v1/roles")
+	@DeleteMapping(value = "/v1/roles/delete")
 	public ResponseEntity<Void> deleteRoleById(@RequestParam(name = "id") String roleId) {
 		if(roleId == null || roleId.equals("")) {
 			throw new BadRequestException("SO1", "Id không được trống");

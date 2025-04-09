@@ -39,8 +39,8 @@ public class RoleInfo {
 	}
 	
 	public RoleInfo(RoleDTO dto) {
-		this.roleId = dto.getRoleId();
-		this.roleName= dto.getRoleName();
-		this.roleDescription = dto.getRoleDescription();
+		this.roleId = roleId;
+		this.roleName = roleName;
+		this.roleDescription = roleDescription;
 	}
 }

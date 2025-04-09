@@ -35,13 +35,13 @@ public class UserController {
 //	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')") If roles are stored with "ROLE_" prefix
 	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
-	@GetMapping(value = "/v1/user")
+	@GetMapping(value = "/v1/user/findAll")
 	public ResponseEntity<CommonResponse<ResultDataPaging<UserInfo>>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(new CommonResponse<>(userService.findAll(pageable)));
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
-	@PostMapping(value = "/v1/user/findAll")
+	@PostMapping(value = "/v1/user/add")
 	public ResponseEntity<CommonResponse<UserInfo>> addUser(@Valid @RequestBody AddUserRequest request){
 		UserDTO userDTO = userService.addUser(request);
 		UserInfo userInfo = new UserInfo(userDTO);
@@ -65,7 +65,7 @@ public class UserController {
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_USER')")
-	@DeleteMapping(value = "/v1/user/{userName}")
+	@DeleteMapping(value = "/v1/user/delete/{userName}")
 	public ResponseEntity<?> deleteByUserName(@PathVariable("userName") String userName){
 		userService.deleteUser(userName);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
