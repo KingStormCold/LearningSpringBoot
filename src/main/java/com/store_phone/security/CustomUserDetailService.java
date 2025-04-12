@@ -24,7 +24,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDTO userDTO = userService.findByUserName(username);
 		if(userDTO == null) {
-			new UsernameNotFoundException("User not found");
+			throw new UsernameNotFoundException("User not found");
 		}
 		
 		List<SimpleGrantedAuthority> authorities = userDTO.getRoles().stream()

@@ -1,7 +1,6 @@
 package com.store_phone.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +25,6 @@ import com.store_phone.request.user.UpdateUserRequest;
 import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.user.UserInfo;
-import com.store_phone.security.JwtUtil;
 import com.store_phone.service.RoleService;
 import com.store_phone.service.UserService;
 import com.store_phone.utils.PasswordUtils;
