@@ -13,10 +13,13 @@ import com.store_phone.converter.ProductConverter;
 import com.store_phone.dto.CategoryDTO;
 import com.store_phone.dto.ProductDTO;
 import com.store_phone.dto.UserDTO;
+import com.store_phone.entity.CategoryEntity;
 import com.store_phone.entity.ProductEntity;
 import com.store_phone.exception.UnprocessableException;
+import com.store_phone.repository.CategoryRespository;
 import com.store_phone.repository.ProductRespository;
 import com.store_phone.request.product.AddProductRequest;
+import com.store_phone.request.product.UpdateProductRequest;
 import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.product.ProductDetail;
@@ -36,6 +39,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private CategoryRespository categoryRespository;
 	
 	@Autowired
 	private UserService userService;
@@ -77,5 +83,43 @@ public class ProductServiceImpl implements ProductService{
 				.map(productDto -> new ProductDetail(productDto)).toList();
 		return new ResultDataPaging<ProductDetail>(result, pagination);
 	}
+
+	@Override
+	public ProductDTO getProductById(String productId) {
+		ProductEntity entity = productRespository.findById(productId).orElse(null);
+		return productConverter.convertToDto(entity);
+	}
+
+	@Override
+	public ProductDTO updateProduct(UpdateProductRequest request) {
+		ProductEntity entity = productRespository.findById(request.getCategoryId()).orElse(null);
+		if (entity == null) {
+			return null;
+		}
+		CategoryEntity category = categoryRespository.findById(request.getCategoryId())
+	            .orElseThrow(() -> new RuntimeException("Category không tồn tại"));
+		
+		entity.setProductName(request.getProductName());
+		entity.setUpdatedBy(request.getUpdatedBy());
+		entity.setUpdatedDate(request.getUpdatedDate());
+		entity.setSortDescription(request.getSortDescription());
+		entity.setContent(request.getContent());
+		entity.setCategory(category);
+		entity.setImage(request.getImage());
+		entity.setInfoInsurance(request.getInfoInsurance());
+		productRespository.save(entity);
+		
+		return productConverter.convertToDto(entity);
+	}
+
+	@Override
+	public void deleteProduct(String productId) {
+		if (productId == null) {
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy productId");
+		}
+		productRespository.deleteById(productId);
+	}
+	
+	
 
 }

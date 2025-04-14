@@ -16,6 +16,7 @@ import com.store_phone.entity.CategoryEntity;
 import com.store_phone.exception.UnprocessableException;
 import com.store_phone.repository.CategoryRespository;
 import com.store_phone.request.category.AddCategoryRequest;
+import com.store_phone.request.category.UpdateCategoryRequest;
 import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.category.CategoryDetail;
@@ -80,5 +81,31 @@ public class CategoryServiceImpl implements CategoryService {
 		CategoryEntity entity = categoryRespository.findById(id).orElse(null);
 		return categoryConverter.convertToDto(entity);
 	}
+
+	@Override
+	public void deleCategoryById(String categoryId) {
+		if (categoryId == null) {
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy categoryId");
+		}
+		categoryRespository.deleteById(categoryId);
+		
+	}
+
+	@Override
+	public CategoryDTO updateCategory(UpdateCategoryRequest request) {
+		CategoryEntity entity = categoryRespository.findById(request.getCategoryName()).orElse(null);
+		if (entity == null) {
+			return null;
+		}
+		entity.setCategoryName(request.getCategoryName());
+		entity.setCategoryDescription(request.getCategoryDescription());
+		entity.setCategoryRoot(request.getCategoryRoot());
+		entity.setDisplayInSlider(request.getDisplayInSlider());
+		categoryRespository.save(entity);
+		return categoryConverter.convertToDto(entity);
+	}
+	
+
+	
 
 }
