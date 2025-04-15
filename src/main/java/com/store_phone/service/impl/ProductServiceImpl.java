@@ -14,6 +14,7 @@ import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.product.ProductInfo;
 import com.store_phone.service.CategoryService;
+import com.store_phone.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,6 +75,7 @@ public class ProductServiceImpl implements ProductService{
         productDTO.setImage(request.getImage());
         productDTO.setInfoBox(request.getInfoBox());
         productDTO.setInfoInsurance(request.getInfoInsurance());
+        productDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin());
 
         ProductEntity productEntity = productConverter.convertToEntity(productDTO);
         productRespository.save(productEntity);
