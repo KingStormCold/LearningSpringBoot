@@ -74,12 +74,12 @@ public class ProductServiceImpl implements ProductService{
     public ProductDTO addProduct(AddProductRequest request) {
         CategoryDTO categoryDTO = categoryService.findById(request.getCategoryId());
         if(categoryDTO == null) {
-			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
+			throw new UnprocessableException(Constants.NOT_FOUND, "Kh�ng t�m th?y danh m?c.");
 		}
 		String userName = SecurityUtils.getCurrentUserLogin();
 		UserDTO userDTO = userService.findByUserName(userName);
 		if(userDTO == null) {
-			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy user.");
+			throw new UnprocessableException(Constants.NOT_FOUND, "Kh�ng t�m th?y user.");
 		}
 		ProductDTO productDTO = new ProductDTO();
         productDTO.setProductId(UUID.randomUUID().toString());
@@ -102,7 +102,7 @@ public class ProductServiceImpl implements ProductService{
         if (categoryDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this Category");
         }
-        // tự sửa
+        // t? s?a
         ProductDTO productDTO = findById(request.getProductId());
         if (productDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this product");
