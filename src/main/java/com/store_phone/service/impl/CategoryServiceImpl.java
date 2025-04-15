@@ -85,17 +85,16 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void deleCategoryById(String categoryId) {
 		if (categoryId == null) {
-			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy categoryId");
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
 		}
 		categoryRespository.deleteById(categoryId);
-		
 	}
 
 	@Override
-	public CategoryDTO updateCategory(UpdateCategoryRequest request) {
-		CategoryEntity entity = categoryRespository.findById(request.getCategoryName()).orElse(null);
+	public CategoryDTO updateCategory(UpdateCategoryRequest request, String categoryId) {
+		CategoryEntity entity = categoryRespository.findById(categoryId).orElse(null);
 		if (entity == null) {
-			return null;
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
 		}
 		entity.setCategoryName(request.getCategoryName());
 		entity.setCategoryDescription(request.getCategoryDescription());

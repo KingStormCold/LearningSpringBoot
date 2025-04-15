@@ -29,9 +29,6 @@ public class UpdateProductRequest {
     @JsonProperty("category_id")
     private String categoryId;
    	
-   	@JsonProperty("updated_by")
-   	private String updatedBy;
-   	
    	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = DateUtils.MY_TIME_ZONE)
    	@JsonProperty("updated_date")
    	private LocalDateTime updatedDate;
@@ -83,14 +80,6 @@ public class UpdateProductRequest {
 
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public LocalDateTime getUpdatedDate() {

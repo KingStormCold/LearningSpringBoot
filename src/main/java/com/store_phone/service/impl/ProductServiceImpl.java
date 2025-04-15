@@ -41,9 +41,6 @@ public class ProductServiceImpl implements ProductService{
 	private CategoryService categoryService;
 	
 	@Autowired
-	private CategoryRespository categoryRespository;
-	
-	@Autowired
 	private UserService userService;
 
 	@Override
@@ -91,25 +88,33 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public ProductDTO updateProduct(UpdateProductRequest request) {
-		ProductEntity entity = productRespository.findById(request.getCategoryId()).orElse(null);
-		if (entity == null) {
-			return null;
+	public ProductDTO updateProduct(UpdateProductRequest request, String productId) {
+		ProductDTO productDTO = getProductById(productId);
+		if (productDTO == null) {
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy sản phẩm.");
 		}
-		CategoryEntity category = categoryRespository.findById(request.getCategoryId())
-	            .orElseThrow(() -> new RuntimeException("Category không tồn tại"));
+		CategoryDTO category = categoryService.findByCategoryId(request.getCategoryId());
+		if(category == null) {
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
+		}
+		String userName = SecurityUtils.getCurrentUserLogin();
+		UserDTO userDTO = userService.findByUserName(userName);
+		if(userDTO == null) {
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy user.");
+		}
+		productDTO.setProductName(request.getProductName());
+		productDTO.setUpdatedBy(userName);
+		productDTO.setUpdatedDate(request.getUpdatedDate());
+		productDTO.setSortDescription(request.getSortDescription());
+		productDTO.setContent(request.getContent());
+		productDTO.setCategory(category);
+		productDTO.setUser(userDTO);
+		productDTO.setImage(request.getImage());
+		productDTO.setInfoInsurance(request.getInfoInsurance());
 		
-		entity.setProductName(request.getProductName());
-		entity.setUpdatedBy(request.getUpdatedBy());
-		entity.setUpdatedDate(request.getUpdatedDate());
-		entity.setSortDescription(request.getSortDescription());
-		entity.setContent(request.getContent());
-		entity.setCategory(category);
-		entity.setImage(request.getImage());
-		entity.setInfoInsurance(request.getInfoInsurance());
-		productRespository.save(entity);
+		productRespository.save(productConverter.convertToEntity(productDTO));
 		
-		return productConverter.convertToDto(entity);
+		return productDTO;
 	}
 
 	@Override
@@ -119,7 +124,4 @@ public class ProductServiceImpl implements ProductService{
 		}
 		productRespository.deleteById(productId);
 	}
-	
-	
-
 }

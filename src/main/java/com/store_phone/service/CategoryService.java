@@ -18,5 +18,5 @@ public interface CategoryService {
 	
 	void deleCategoryById (String categoryId);
 	
-	CategoryDTO updateCategory (UpdateCategoryRequest request);
+	CategoryDTO updateCategory (UpdateCategoryRequest request, String categoryId);
 }

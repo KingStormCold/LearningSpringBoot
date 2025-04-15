@@ -54,15 +54,14 @@ public class ProductController {
 			throw new BadRequestException("SO1", "Id không được trống");
 		}
 		ProductDTO result = productService.getProductById(productId);
-
 		return ResponseEntity.ok(new CommonResponse<>(result));
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_PRODUCT')")
-	@PutMapping(value = "/v1/products")
+	@PutMapping(value = "/v1/products/{id}")
 	public ResponseEntity<CommonResponse<ProductDetail>> updateProduct(
-			@Valid @RequestBody UpdateProductRequest request) {
-		ProductDTO productDTO = productService.updateProduct(request);
+			@Valid @RequestBody UpdateProductRequest request, @PathVariable("id") String productId) {
+		ProductDTO productDTO = productService.updateProduct(request, productId);
 		ProductDetail productDetail = new ProductDetail(productDTO);
 		return ResponseEntity.ok(new CommonResponse<>(productDetail));
 	}
@@ -70,11 +69,7 @@ public class ProductController {
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_PRODUCT')")
 	@DeleteMapping(value = "/v1/product/{id}")
 	public ResponseEntity<CommonResponse<Void>> deleteProduct(@PathVariable("id") String productId) {
-		if (productId == null) {
-			throw new BadRequestException("SO1", "Id không được trống");
-		}
 		productService.deleteProduct(productId);
-
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

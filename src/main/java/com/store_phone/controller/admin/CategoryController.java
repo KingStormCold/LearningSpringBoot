@@ -59,16 +59,13 @@ public class CategoryController {
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_CATEGORY')")
 	@DeleteMapping(value = "/v1/category/{id}")
 	public ResponseEntity<CommonResponse<Void>> deleteCategoryById(@PathVariable("id") String categoryId) {
-		if (categoryId == null) {
-			throw new BadRequestException("SO1", "Id không được trống");
-		}
-		 categoryService.deleCategoryById(categoryId); 
+		categoryService.deleCategoryById(categoryId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	} 
+	}
 	
-	@PutMapping(value = "/v1/category")
-	public ResponseEntity<CommonResponse<CategoryDTO>> updateUser(@Valid @RequestBody UpdateCategoryRequest request){
-		CategoryDTO categoryDTO = categoryService.updateCategory(request);
+	@PutMapping(value = "/v1/category/{id}")
+	public ResponseEntity<CommonResponse<CategoryDTO>> updateUser(@PathVariable("id") String categoryId, @Valid @RequestBody UpdateCategoryRequest request){
+		CategoryDTO categoryDTO = categoryService.updateCategory(request, categoryId);
 		return ResponseEntity.ok(new CommonResponse<>(categoryDTO));
 	}
 	
