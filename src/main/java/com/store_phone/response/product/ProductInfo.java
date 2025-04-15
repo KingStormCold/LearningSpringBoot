@@ -11,6 +11,7 @@ public class ProductInfo extends BaseInfo {
     private String image;
     private String infoBox;
     private String infoInsurance;
+    // thiếu categoryId và categoryName
 
     public ProductInfo(ProductDTO dto) {
         this.productId = dto.getProductId();

@@ -16,6 +16,8 @@ public class AddCategoryRequest extends BaseRequest {
     @JsonProperty("category_root")
     @NotBlank(message = "categoryRoot cannot empty")
     private String categoryRoot;
+    
+    //bổ sung displayInSlider
 
     public String getCategoryName() {
         return categoryName;

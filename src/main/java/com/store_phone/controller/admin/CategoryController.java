@@ -9,7 +9,6 @@ import com.store_phone.response.category.CategoryInfo;
 import com.store_phone.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,8 @@ public class CategoryController {
 
     @GetMapping(value = "v1/category/findAll")
     public ResponseEntity<CommonResponse<ResultDataPaging<CategoryInfo>>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(new CommonResponse<>(categoryService.findAll(pageable)));
+    	// thiếu trả về categoryRootName
+    	return ResponseEntity.ok(new CommonResponse<>(categoryService.findAll(pageable)));
     }
 
     @GetMapping(value = "v1/category/{categoryId}")
@@ -33,19 +33,19 @@ public class CategoryController {
         return ResponseEntity.ok(new CommonResponse<>(categoryInfo));
     }
 
-    @PostMapping(value = "v1/category/create")
+    @PostMapping(value = "v1/category")
     public ResponseEntity<CommonResponse<CategoryDTO>> addCategory (@Valid @RequestBody AddCategoryRequest request) {
         return ResponseEntity.ok(new CommonResponse<>(categoryService.addCategory(request)));
     }
 
-    @PutMapping(value = "v1/category/update")
+    @PutMapping(value = "v1/category")
     public ResponseEntity<CommonResponse<CategoryInfo>> updateCategory (@Valid @RequestBody UpdateCategoryRequest request) {
         CategoryDTO categoryDTO = categoryService.updateCategory(request);
         CategoryInfo categoryInfo = new CategoryInfo(categoryDTO);
         return ResponseEntity.ok(new CommonResponse<>(categoryInfo));
     }
 
-    @DeleteMapping(value = "v1/category/delete/{categoryId}")
+    @DeleteMapping(value = "v1/category/{categoryId}")
     public ResponseEntity<?> deleteById (@PathVariable("categoryId") String categoryId) {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

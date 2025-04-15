@@ -8,6 +8,7 @@ public class CategoryInfo extends BaseInfo {
     private String categoryName;
     private String categoryDescription;
     private String categoryRoot;
+    // cần thêm categoryRootName
 
     public String getCategoryId() {
         return categoryId;

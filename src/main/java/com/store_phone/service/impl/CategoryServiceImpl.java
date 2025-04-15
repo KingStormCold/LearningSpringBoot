@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import com.store_phone.service.CategoryService;
 import org.springframework.util.ObjectUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,13 +49,13 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryDTO getCategoryInfo(String categoryId) {
         if (ObjectUtils.isEmpty(categoryId)) {
-            throw new BadRequestException(Constants.NOT_EMPTY,"categoryId");
+            throw new BadRequestException(Constants.NOT_FOUND,"categoryId");
         }
-        CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElse(null);
-        if (categoryEntity == null) {
+        CategoryDTO categoryDTO = findById(categoryId);
+        if (categoryDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this category!");
         }
-        return categoryConverter.convertToDto(categoryEntity);
+        return categoryDTO;
     }
 
     @Override
@@ -68,19 +67,18 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryDTO addCategory(AddCategoryRequest request) {
         if (request.getCategoryRoot() != null) {
-            CategoryEntity categoryRoot = categoryRepository.findById(request.getCategoryRoot()).orElse(null);
+        	CategoryDTO categoryRoot = findById(request.getCategoryRoot());
             if (categoryRoot == null) {
                 throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find the Root Category");
             }
-
         }
 
         CategoryDTO newCategory = new CategoryDTO();
         newCategory.setCategoryId(UUID.randomUUID().toString());
         newCategory.setCategoryName(request.getCategoryName());
         newCategory.setCategoryDescription(request.getCategoryDescription());
-        newCategory.setCategoryRoot(request.getCategoryRoot() != null ? request.getCategoryRoot() : "Cannot find the Root Category");
-        newCategory.setDisplayInSlider(true);
+        newCategory.setCategoryRoot(request.getCategoryRoot() != null ? request.getCategoryRoot() : "");
+        newCategory.setDisplayInSlider(true);// phải lấy từ request hk dc để mặc định là true
         newCategory.setCreatedBy(SecurityUtils.getCurrentUserLogin());
 
         categoryRepository.save(categoryConverter.convertToEntity(newCategory));
@@ -93,14 +91,18 @@ public class CategoryServiceImpl implements CategoryService{
         if (categoryDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this category");
         }
+        if(!ObjectUtils.isEmpty(request.getCategoryRoot())) {
+        	CategoryDTO category = findById(request.getCategoryRoot());
+    		if(category == null) {
+    			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
+    		}
+        }
+        
         categoryDTO.setCategoryName(request.getCategoryName());
         categoryDTO.setCategoryDescription(request.getCategoryDescription());
         categoryDTO.setCategoryRoot(request.getCategoryRoot());
-
-        categoryDTO.setUpdatedBy(request.getUpdatedBy());
-        categoryDTO.setCreatedBy(request.getCreatedBy());
-        categoryDTO.setCreatedDate(LocalDateTime.now());
-        categoryDTO.setUpdatedDate(LocalDateTime.now());
+        // phải lấy từ request hk dc để mặc định là true categoryDTO.setDisplayInSlider(true);
+        categoryDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
 
         CategoryEntity categoryEntity = categoryConverter.convertToEntity(categoryDTO);
         categoryRepository.save(categoryEntity);

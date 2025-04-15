@@ -4,6 +4,7 @@ import com.store_phone.common.Constants;
 import com.store_phone.converter.ProductConverter;
 import com.store_phone.dto.CategoryDTO;
 import com.store_phone.dto.ProductDTO;
+import com.store_phone.dto.UserDTO;
 import com.store_phone.entity.ProductEntity;
 import com.store_phone.exception.BadRequestException;
 import com.store_phone.exception.UnprocessableException;
@@ -20,6 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.store_phone.service.ProductService;
+import com.store_phone.service.UserService;
+import com.store_phone.utils.SecurityUtils;
+
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -36,6 +40,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private CategoryService categoryService;
+    
+    @Autowired
+    private UserService userService;
 
     @Override
     public ResultDataPaging<ProductInfo> findAll(Pageable pageable) {
@@ -55,18 +62,26 @@ public class ProductServiceImpl implements ProductService{
         if (ObjectUtils.isEmpty(productId)) {
             throw new BadRequestException(Constants.NOT_EMPTY, "ProductId");
         }
-        ProductEntity productEntity = productRespository.findById(productId).orElse(null);
-        if (productEntity == null) {
+        ProductDTO productDTO = findById(productId);
+        if (productDTO == null) {
             throw new UnprocessableException(Constants.NOT_EMPTY,"Cannot find this Product");
         }
 
-        return productConverter.convertToDto(productEntity);
+        return productDTO;
     }
 
     @Override
     public ProductDTO addProduct(AddProductRequest request) {
-        ProductDTO productDTO = new ProductDTO();
-
+        CategoryDTO categoryDTO = categoryService.findById(request.getCategoryId());
+        if(categoryDTO == null) {
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
+		}
+		String userName = SecurityUtils.getCurrentUserLogin();
+		UserDTO userDTO = userService.findByUserName(userName);
+		if(userDTO == null) {
+			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy user.");
+		}
+		ProductDTO productDTO = new ProductDTO();
         productDTO.setProductId(UUID.randomUUID().toString());
         productDTO.setProductName(request.getProductName());
         productDTO.setContent(request.getContent());
@@ -74,11 +89,11 @@ public class ProductServiceImpl implements ProductService{
         productDTO.setImage(request.getImage());
         productDTO.setInfoBox(request.getInfoBox());
         productDTO.setInfoInsurance(request.getInfoInsurance());
+        productDTO.setCategory(categoryDTO);
+        productDTO.setUser(userDTO);
+        productRespository.save(productConverter.convertToEntity(productDTO));
 
-        ProductEntity productEntity = productConverter.convertToEntity(productDTO);
-        productRespository.save(productEntity);
-
-        return productConverter.convertToDto(productEntity);
+        return productDTO;
     }
 
     @Override
@@ -87,7 +102,7 @@ public class ProductServiceImpl implements ProductService{
         if (categoryDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this Category");
         }
-
+        // tự sửa
         ProductDTO productDTO = findById(request.getProductId());
         if (productDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this product");

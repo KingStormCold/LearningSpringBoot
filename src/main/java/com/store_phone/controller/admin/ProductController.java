@@ -1,7 +1,6 @@
 package com.store_phone.controller.admin;
 
 import com.store_phone.dto.ProductDTO;
-import com.store_phone.entity.ProductEntity;
 import com.store_phone.request.product.AddProductRequest;
 import com.store_phone.request.product.UpdateProductRequest;
 import com.store_phone.response.CommonResponse;
@@ -30,23 +29,22 @@ public class ProductController {
     public ResponseEntity<CommonResponse<ProductInfo>> findById (@PathVariable("productId") String productId) {
         ProductDTO productDTO = productService.getProductInfo(productId);
         ProductInfo productInfo = new ProductInfo(productDTO);
-
         return ResponseEntity.ok(new CommonResponse<>(productInfo));
     }
 
-    @PostMapping(value = "v1/product/create")
+    @PostMapping(value = "v1/product")
     public ResponseEntity<CommonResponse<ProductDTO>> addProduct (@Valid @RequestBody AddProductRequest request) {
         return ResponseEntity.ok(new CommonResponse<>(productService.addProduct(request)));
     }
 
-    @PutMapping(value = "v1/product/update")
+    @PutMapping(value = "v1/product")
     public ResponseEntity<CommonResponse<ProductInfo>> updateProduct (@Valid @RequestBody UpdateProductRequest request) {
         ProductDTO productDTO = productService.updateProduct(request);
         ProductInfo productInfo = new ProductInfo(productDTO);
         return ResponseEntity.ok(new CommonResponse<>(productInfo));
     }
 
-    @DeleteMapping(value = "v1/product/delete/{productId}")
+    @DeleteMapping(value = "v1/product/{productId}")
     public ResponseEntity<?> deleteById (@PathVariable("productId") String productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

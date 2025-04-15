@@ -31,10 +31,6 @@ public class UpdateProductRequest extends BaseRequest {
     @NotBlank(message = "categoryId cannot be empty")
     private String categoryId;
 
-    @JsonProperty("user_name")
-    @NotBlank(message = "userName cannot be empty")
-    private String userName;
-
     public String getProductId() {
         return productId;
     }
@@ -97,13 +93,5 @@ public class UpdateProductRequest extends BaseRequest {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 }

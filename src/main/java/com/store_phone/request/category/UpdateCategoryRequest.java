@@ -10,10 +10,6 @@ public class UpdateCategoryRequest extends BaseRequest {
     @NotBlank(message = "CategoryId cannot empty")
     private String categoryId;
 
-    public String getCategoryId() {
-        return categoryId;
-    }
-
     @JsonProperty("category_name")
     @NotBlank(message = "categoryName cannot empty")
     private String categoryName;
@@ -25,7 +21,13 @@ public class UpdateCategoryRequest extends BaseRequest {
     @JsonProperty("category_root")
     @NotBlank(message = "categoryRoot cannot empty")
     private String categoryRoot;
-
+    
+    //bổ sung displayInSlider
+    
+    public String getCategoryId() {
+        return categoryId;
+    }
+    
     public String getCategoryName() {
         return categoryName;
     }
