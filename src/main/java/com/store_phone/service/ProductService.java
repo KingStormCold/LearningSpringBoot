@@ -13,5 +13,4 @@ public interface ProductService {
     ProductDTO addProduct (AddProductRequest request);
     ProductDTO updateProduct (UpdateProductRequest request);
     void deleteProduct (String productId);
-
 }
