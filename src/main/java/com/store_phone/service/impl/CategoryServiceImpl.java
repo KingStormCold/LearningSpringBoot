@@ -12,6 +12,7 @@ import com.store_phone.request.category.UpdateCategoryRequest;
 import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.category.CategoryInfo;
+import com.store_phone.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,19 +67,24 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryDTO addCategory(AddCategoryRequest request) {
-        CategoryEntity categoryEntity = new CategoryEntity();
-        categoryEntity.setCategoryId(UUID.randomUUID().toString());
-        categoryEntity.setCategoryName(request.getCategoryName());
-        categoryEntity.setCategoryDescription(request.getCategoryDescription());
-        categoryEntity.setCategoryRoot(request.getCategoryRoot());
+        if (request.getCategoryRoot() != null) {
+            CategoryEntity categoryRoot = categoryRepository.findById(request.getCategoryRoot()).orElse(null);
+            if (categoryRoot == null) {
+                throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find the Root Category");
+            }
 
-        categoryEntity.setCreatedDate(LocalDateTime.now());
-        categoryEntity.setCreatedBy("admin");
-        categoryEntity.setUpdatedDate(LocalDateTime.now());
-        categoryEntity.setUpdatedBy("admin");
+        }
 
-        categoryRepository.save(categoryEntity);
-        return categoryConverter.convertToDto(categoryEntity);
+        CategoryDTO newCategory = new CategoryDTO();
+        newCategory.setCategoryId(UUID.randomUUID().toString());
+        newCategory.setCategoryName(request.getCategoryName());
+        newCategory.setCategoryDescription(request.getCategoryDescription());
+        newCategory.setCategoryRoot(request.getCategoryRoot() != null ? request.getCategoryRoot() : "Cannot find the Root Category");
+        newCategory.setDisplayInSlider(true);
+        newCategory.setCreatedBy(SecurityUtils.getCurrentUserLogin());
+
+        categoryRepository.save(categoryConverter.convertToEntity(newCategory));
+        return newCategory;
     }
 
     @Override

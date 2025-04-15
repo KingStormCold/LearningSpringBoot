@@ -54,9 +54,11 @@ public class SecurityConfig {
 			.disable()
 			.authorizeHttpRequests(auth -> auth
 					.requestMatchers("/api/login", "/api/logout").permitAll()
+					.requestMatchers("/v1/**").hasAuthority("ADMIN")
 					.requestMatchers("/v1/category/**").hasAuthority("ADMIN_CATEGORY")
-					.requestMatchers("/v1/user/**").hasAuthority("ADMIN_CATEGORY")
-					.requestMatchers("/v1/roles/**").hasAuthority("ADMIN_CATEGORY")
+					.requestMatchers("/v1/user/**").hasAuthority("ADMIN_USER")
+					.requestMatchers("/v1/roles/**").hasAuthority("ADMIN_ROLE")
+					.requestMatchers("/v1/product/**").hasAuthority("ADMIN_PRODUCT")
 					.anyRequest().authenticated()
 				)
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
