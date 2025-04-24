@@ -2,6 +2,7 @@ package com.store_phone.controller.admin;
 
 import java.util.List;
 
+import com.store_phone.response.role.RoleInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class RoleController {
 	//1. lấy tất cả roles theo phân trang
 	//2. pageSize(số lượng phần tử trên 1 trang), pageNumbe(trang)
 	@GetMapping(value = "/v1/roles/findAll")
-	public ResponseEntity<CommonResponse<List<RoleDTO>>> findAll() {
+	public ResponseEntity<CommonResponse<List<RoleInfo>>> findAll() {
 		return ResponseEntity.status(HttpStatus.OK).body(new CommonResponse<>(roleService.findAll()));
 	}
 	

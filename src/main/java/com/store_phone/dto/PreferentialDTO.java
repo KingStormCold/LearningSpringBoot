@@ -7,6 +7,15 @@ public class PreferentialDTO extends BaseDTO{
     private String content;
 
     private ProductDTO product;
+	private String productId;
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 
 	public String getPreferentialId() {
 		return preferentialId;

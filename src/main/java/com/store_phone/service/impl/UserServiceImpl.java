@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService{
 		userRepository.save(userEntity);
 		
 		//1. lấy hết danh sách role
-		List<RoleDTO> roles = roleService.findAll();
+		List<RoleDTO> roles = roleService.findAll2();
 		//2. tạo ra 1 list remove role
 		
 		List<RoleDTO> addRoles = roleService.getRolesByRoleIdIn(request.getRoles());

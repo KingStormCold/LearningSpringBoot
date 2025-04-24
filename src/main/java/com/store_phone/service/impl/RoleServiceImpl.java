@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import com.store_phone.response.role.RoleInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,9 +29,17 @@ public class RoleServiceImpl implements RoleService {
 	private RoleConverter roleConverter;
 	
 	@Override
-	public List<RoleDTO> findAll() {
-		List<RoleEntity> roles = roleRepository.findAll();
-		return roles.stream().map(role -> roleConverter.convertToDto(role)).toList();
+	public List<RoleInfo> findAll() {
+		List<RoleEntity> roleEntities = roleRepository.findAll();
+		List<RoleDTO> roleDTOS = roleEntities.stream().map(role -> roleConverter.convertToDto(role)).toList();
+		List<RoleInfo> results = roleDTOS.stream().map(roleDTO -> new RoleInfo(roleDTO)).toList();
+		return results;
+	}
+
+	@Override
+	public List<RoleDTO> findAll2() {
+		List<RoleEntity> roleEntities = roleRepository.findAll();
+		return roleEntities.stream().map(role -> roleConverter.convertToDto(role)).toList();
 	}
 
 	@Override

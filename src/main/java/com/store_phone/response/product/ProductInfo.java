@@ -11,7 +11,24 @@ public class ProductInfo extends BaseInfo {
     private String image;
     private String infoBox;
     private String infoInsurance;
-    // thiếu categoryId và categoryName
+    private String categoryId;
+    private String categoryName;
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public ProductInfo(ProductDTO dto) {
         this.productId = dto.getProductId();
@@ -25,6 +42,8 @@ public class ProductInfo extends BaseInfo {
         this.createdDate = dto.getCreatedDate();
         this.updatedBy = dto.getUpdatedBy();
         this.updatedDate = dto.getUpdatedDate();
+        this.categoryId = dto.getProductId();
+        this.categoryName = dto.getProductName();
     }
 
     public String getProductId() {

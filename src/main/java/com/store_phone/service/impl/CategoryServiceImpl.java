@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService{
         newCategory.setCategoryName(request.getCategoryName());
         newCategory.setCategoryDescription(request.getCategoryDescription());
         newCategory.setCategoryRoot(request.getCategoryRoot() != null ? request.getCategoryRoot() : "");
-        newCategory.setDisplayInSlider(true);// phải lấy từ request hk dc để mặc định là true
+        newCategory.setDisplayInSlider(request.isDisplayInSlider());
         newCategory.setCreatedBy(SecurityUtils.getCurrentUserLogin());
 
         categoryRepository.save(categoryConverter.convertToEntity(newCategory));
@@ -94,14 +94,14 @@ public class CategoryServiceImpl implements CategoryService{
         if(!ObjectUtils.isEmpty(request.getCategoryRoot())) {
         	CategoryDTO category = findById(request.getCategoryRoot());
     		if(category == null) {
-    			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
+    			throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this category.");
     		}
         }
         
         categoryDTO.setCategoryName(request.getCategoryName());
         categoryDTO.setCategoryDescription(request.getCategoryDescription());
         categoryDTO.setCategoryRoot(request.getCategoryRoot());
-        // phải lấy từ request hk dc để mặc định là true categoryDTO.setDisplayInSlider(true);
+        categoryDTO.setDisplayInSlider(request.isDisplayInSlider());
         categoryDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
 
         CategoryEntity categoryEntity = categoryConverter.convertToEntity(categoryDTO);

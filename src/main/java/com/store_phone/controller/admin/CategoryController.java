@@ -22,7 +22,6 @@ public class CategoryController {
 
     @GetMapping(value = "v1/category/findAll")
     public ResponseEntity<CommonResponse<ResultDataPaging<CategoryInfo>>> findAll(Pageable pageable) {
-    	// thiếu trả về categoryRootName
     	return ResponseEntity.ok(new CommonResponse<>(categoryService.findAll(pageable)));
     }
 

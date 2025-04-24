@@ -21,8 +21,18 @@ public class UpdateCategoryRequest extends BaseRequest {
     @JsonProperty("category_root")
     @NotBlank(message = "categoryRoot cannot empty")
     private String categoryRoot;
-    
-    //bổ sung displayInSlider
+
+    @JsonProperty("display_in_slider")
+    @NotBlank(message = "displayInSlider cannot empty")
+    private boolean displayInSlider;
+
+    public boolean isDisplayInSlider() {
+        return displayInSlider;
+    }
+
+    public void setDisplayInSlider(boolean displayInSlider) {
+        this.displayInSlider = displayInSlider;
+    }
     
     public String getCategoryId() {
         return categoryId;
