@@ -83,7 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void deleCategoryById(String categoryId) {
+	public void deleteCategoryById(String categoryId) {
 		if (categoryId == null) {
 			throw new UnprocessableException(Constants.NOT_FOUND, "Không tìm thấy danh mục.");
 		}

@@ -59,7 +59,7 @@ public class CategoryController {
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('ADMIN_CATEGORY')")
 	@DeleteMapping(value = "/v1/category/{id}")
 	public ResponseEntity<CommonResponse<Void>> deleteCategoryById(@PathVariable("id") String categoryId) {
-		categoryService.deleCategoryById(categoryId);
+		categoryService.deleteCategoryById(categoryId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
