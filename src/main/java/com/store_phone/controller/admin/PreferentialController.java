@@ -1,14 +1,11 @@
 package com.store_phone.controller.admin;
 
 import com.store_phone.dto.PreferentialDTO;
-import com.store_phone.dto.ProductDTO;
-import com.store_phone.request.preference.AddPreferenceRequest;
-import com.store_phone.request.preference.UpdatePreferenceRequest;
-import com.store_phone.request.product.UpdateProductRequest;
+import com.store_phone.request.preferential.AddPreferentialRequest;
+import com.store_phone.request.preferential.UpdatePreferentialRequest;
 import com.store_phone.response.CommonResponse;
 import com.store_phone.response.ResultDataPaging;
-import com.store_phone.response.preference.PreferenceInfo;
-import com.store_phone.response.product.ProductInfo;
+import com.store_phone.response.preferential.Preferential_info;
 import com.store_phone.service.PreferentialService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,26 +21,26 @@ public class PreferentialController {
     private PreferentialService preferentialService;
 
     @GetMapping("v1/preferential/findAll")
-    public ResponseEntity<CommonResponse<ResultDataPaging<PreferenceInfo>>> findAll (Pageable pageable) {
+    public ResponseEntity<CommonResponse<ResultDataPaging<Preferential_info>>> findAll (Pageable pageable) {
         return ResponseEntity.ok(new CommonResponse<>(preferentialService.findAll(pageable)));
     }
 
     @GetMapping("v1/preferential/{preferentialId}")
-    public ResponseEntity<CommonResponse<PreferenceInfo>> findById (@PathVariable("preferentialId") String preferentialId) {
+    public ResponseEntity<CommonResponse<Preferential_info>> findById (@PathVariable("preferentialId") String preferentialId) {
         PreferentialDTO preferentialDTO = preferentialService.findById(preferentialId);
-        PreferenceInfo preferenceInfo = new PreferenceInfo(preferentialDTO);
+        Preferential_info preferenceInfo = new Preferential_info(preferentialDTO);
         return ResponseEntity.ok(new CommonResponse<>(preferenceInfo));
     }
 
     @PostMapping(value = "v1/preferential")
-    public ResponseEntity<CommonResponse<PreferentialDTO>> addPreferential (@Valid @RequestBody AddPreferenceRequest request) {
+    public ResponseEntity<CommonResponse<PreferentialDTO>> addPreferential (@Valid @RequestBody AddPreferentialRequest request) {
         return ResponseEntity.ok(new CommonResponse<>(preferentialService.addPreferential(request)));
     }
 
     @PutMapping(value = "v1/preferential")
-    public ResponseEntity<CommonResponse<PreferenceInfo>> updatePreferential (@Valid @RequestBody UpdatePreferenceRequest request) {
+    public ResponseEntity<CommonResponse<Preferential_info>> updatePreferential (@Valid @RequestBody UpdatePreferentialRequest request) {
         PreferentialDTO preferentialDTO = preferentialService.updatePreferential(request);
-        PreferenceInfo preferenceInfo = new PreferenceInfo(preferentialDTO);
+        Preferential_info preferenceInfo = new Preferential_info(preferentialDTO);
         return ResponseEntity.ok(new CommonResponse<>(preferenceInfo));
     }
 

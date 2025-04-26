@@ -5,7 +5,7 @@ public class SpecificationDTO extends BaseDTO {
 
     private String specificationsContent;
 
-    private ProductDTO product;
+    private ProductDTO productDTO;
 
 	public String getSpecificationsId() {
 		return specificationsId;
@@ -24,11 +24,11 @@ public class SpecificationDTO extends BaseDTO {
 	}
 
 	public ProductDTO getProduct() {
-		return product;
+		return productDTO;
 	}
 
 	public void setProduct(ProductDTO product) {
-		this.product = product;
+		this.productDTO = product;
 	}
     
 }

@@ -11,6 +11,28 @@ public class SpecificationResponse extends BaseInfo {
     @JsonProperty("specifications_content")
     private String specificationsContent;
 
+    @JsonProperty("product_id")
+    private String productId;
+
+    @JsonProperty("product_name")
+    private String productName;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public String getSpecificationsId() {
         return specificationsId;
     }
@@ -29,7 +51,9 @@ public class SpecificationResponse extends BaseInfo {
 
     public SpecificationResponse(SpecificationDTO dto) {
         this.specificationsId = dto.getSpecificationsId();
-        this.specificationsContent = getSpecificationsContent();
+        this.specificationsContent = dto.getSpecificationsContent();
+        this.productId = dto.getProduct().getProductId();
+        this.productName = dto.getProduct().getProductName();
         this.updatedBy = dto.getUpdatedBy();
         this.updatedDate = dto.getUpdatedDate();
         this.createdDate = dto.getUpdatedDate();

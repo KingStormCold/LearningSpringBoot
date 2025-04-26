@@ -6,16 +6,7 @@ public class PreferentialDTO extends BaseDTO{
 
     private String content;
 
-    private ProductDTO product;
-	private String productId;
-
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
+    private ProductDTO productDTO;
 
 	public String getPreferentialId() {
 		return preferentialId;
@@ -33,12 +24,11 @@ public class PreferentialDTO extends BaseDTO{
 		this.content = content;
 	}
 
-	public ProductDTO getProduct() {
-		return product;
+	public ProductDTO getProductDTO() {
+		return productDTO;
 	}
 
-	public void setProduct(ProductDTO product) {
-		this.product = product;
+	public void setProductDTO(ProductDTO productDTO) {
+		this.productDTO = productDTO;
 	}
-
 }

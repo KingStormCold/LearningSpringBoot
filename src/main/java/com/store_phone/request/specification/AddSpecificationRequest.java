@@ -13,6 +13,17 @@ public class AddSpecificationRequest extends BaseRequest {
     @NotBlank(message = "Specifications content cannot empty")
     private String specificationsContent;
 
+    @JsonProperty("Product_Id")
+    private String productId;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
     public String getSpecificationId() {
         return specificationId;
     }
