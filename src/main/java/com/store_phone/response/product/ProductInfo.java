@@ -1,0 +1,114 @@
+package com.store_phone.response.product;
+
+import com.store_phone.dto.ProductDTO;
+import com.store_phone.response.BaseInfo;
+
+public class ProductInfo extends BaseInfo {
+    private String productId;
+    private String productName;
+    private String shortDescription;
+    private String content;
+    private String image;
+    private String infoBox;
+    private String infoInsurance;
+    private String categoryId;
+    private String categoryName;
+    private String userName;
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public ProductInfo(ProductDTO dto) {
+        this.productId = dto.getProductId();
+        this.productName = dto.getProductName();
+        this.shortDescription = dto.getSortDescription();
+        this.content = dto.getContent();
+        this.image = dto.getImage();
+        this.infoBox = dto.getInfoBox();
+        this.infoInsurance = dto.getInfoInsurance();
+        this.createdBy = dto.getCreatedBy();
+        this.createdDate = dto.getCreatedDate();
+        this.updatedBy = dto.getUpdatedBy();
+        this.updatedDate = dto.getUpdatedDate();
+        this.categoryId = dto.getCategory().getCategoryId();
+        this.categoryName = dto.getCategory().getCategoryName();
+        this.userName = dto.getUser().getUserName();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getInfoBox() {
+        return infoBox;
+    }
+
+    public void setInfoBox(String infoBox) {
+        this.infoBox = infoBox;
+    }
+
+    public String getInfoInsurance() {
+        return infoInsurance;
+    }
+
+    public void setInfoInsurance(String infoInsurance) {
+        this.infoInsurance = infoInsurance;
+    }
+}

@@ -33,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "v1/product")
-    public ResponseEntity<CommonResponse<ProductDTO>> addProduct (@Valid @RequestBody AddProductRequest request) {
+    public ResponseEntity<CommonResponse<ProductInfo>> addProduct (@Valid @RequestBody AddProductRequest request) {
         return ResponseEntity.ok(new CommonResponse<>(productService.addProduct(request)));
     }
 

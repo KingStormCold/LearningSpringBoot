@@ -39,9 +39,6 @@ public class PreferentialServiceImpl implements PreferentialService{
     private PreferentialConverter preferentialConverter;
 
     @Autowired
-    private PreferentialService preferentialService;
-
-    @Autowired
     private ProductService productService;
 
     @Override

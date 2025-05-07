@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface ProductService {
     ResultDataPaging<ProductInfo> findAll(Pageable pageable);
     ProductDTO getProductInfo(String productId);
-    ProductDTO addProduct (AddProductRequest request);
+    ProductInfo addProduct (AddProductRequest request);
     ProductDTO updateProduct (UpdateProductRequest request);
     void deleteProduct (String productId);
 }
