@@ -60,7 +60,7 @@ public class SecurityConfig {
 					.requestMatchers("/v1/roles/**").hasAuthority("ADMIN_ROLE")
 					.requestMatchers("/v1/product/**").hasAuthority("ADMIN_PRODUCT")
 					.requestMatchers("/v1/specification/**").hasAuthority("ADMIN_PRODUCT")
-					.requestMatchers("/v1/preferential/**").hasAuthority("ADMIN_PRODUCT")
+					.requestMatchers("/v1/specification/**").hasAuthority("ADMIN_CATEGORY")
 					.anyRequest().authenticated()
 				)
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

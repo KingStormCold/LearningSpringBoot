@@ -1,18 +1,19 @@
 package com.store_phone.service;
 
 import com.store_phone.dto.PreferentialDTO;
-import com.store_phone.request.preferential.AddPreferentialRequest;
-import com.store_phone.request.preferential.UpdatePreferentialRequest;
+import com.store_phone.request.preference.AddPreferenceRequest;
+import com.store_phone.request.preference.UpdatePreferenceRequest;
 import com.store_phone.response.ResultDataPaging;
-import com.store_phone.response.preferential.Preferential_info;
+import com.store_phone.response.preference.PreferenceInfo;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PreferentialService {
-    ResultDataPaging<Preferential_info> findAll (Pageable pageable);
+    ResultDataPaging<PreferenceInfo> findAll (Pageable pageable);
     PreferentialDTO getPreferentialDetail(String preferentialId);
     PreferentialDTO findById(String preferentialId);
-    PreferentialDTO addPreferential(AddPreferentialRequest request);
-    PreferentialDTO updatePreferential(UpdatePreferentialRequest request);
+    PreferentialDTO addPreferential(AddPreferenceRequest request);
+    PreferentialDTO updatePreferential(UpdatePreferenceRequest request);
     void deletePreferential(String preferentialId);
 
 }

@@ -1,21 +1,14 @@
-package com.store_phone.response.preferential;
+package com.store_phone.response.preference;
 
 import com.store_phone.dto.PreferentialDTO;
 import com.store_phone.response.BaseInfo;
 
-public class Preferential_info extends BaseInfo {
+import java.awt.*;
+
+public class PreferenceInfo extends BaseInfo {
     private String preferentialId;
     private String content;
     private String productId;
-    private String productName;
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
 
     public String getPreferentialId() {
         return preferentialId;
@@ -41,11 +34,10 @@ public class Preferential_info extends BaseInfo {
         this.productId = productId;
     }
 
-    public Preferential_info(PreferentialDTO dto) {
+    public PreferenceInfo(PreferentialDTO dto) {
         this.preferentialId = dto.getPreferentialId();
         this.content = dto.getContent();
-        this.productId = dto.getProductDTO().getProductId();
-        this.productName = dto.getProductDTO().getProductName();
+        this.productId = dto.getProduct().getProductId();
         this.createdBy = dto.getCreatedBy();
         this.createdDate = dto.getCreatedDate();
         this.updatedBy = dto.getUpdatedBy();

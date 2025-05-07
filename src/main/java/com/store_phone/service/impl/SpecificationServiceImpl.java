@@ -3,7 +3,6 @@ package com.store_phone.service.impl;
 import com.store_phone.common.Constants;
 import com.store_phone.converter.SpecificationsConverter;
 import com.store_phone.dto.CategoryDTO;
-import com.store_phone.dto.ProductDTO;
 import com.store_phone.dto.SpecificationDTO;
 import com.store_phone.entity.CategoryEntity;
 import com.store_phone.entity.SpecificationEntity;
@@ -15,7 +14,6 @@ import com.store_phone.request.specification.UpdateSpecificationRequest;
 import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.specification.SpecificationResponse;
-import com.store_phone.service.ProductService;
 import com.store_phone.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,9 +34,6 @@ public class SpecificationServiceImpl implements SpecificationService{
 
     @Autowired
     private SpecificationsConverter specificationsConverter;
-
-    @Autowired
-    private ProductService productService;
 
     @Override
     public ResultDataPaging<SpecificationResponse> findAll(Pageable pageable) {
@@ -73,16 +68,10 @@ public class SpecificationServiceImpl implements SpecificationService{
 
     @Override
     public SpecificationDTO addSpecification(AddSpecificationRequest request) {
-        ProductDTO productDTO = productService.getProductInfo(request.getProductId());
-        if (productDTO == null) {
-            throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this product to create new Specification");
-        }
-
         SpecificationDTO newSpecification = new SpecificationDTO();
         newSpecification.setSpecificationsId(UUID.randomUUID().toString());
         newSpecification.setSpecificationsContent(request.getSpecificationsContent());
         newSpecification.setCreatedBy(SecurityUtils.getCurrentUserLogin());
-        newSpecification.setProduct(productDTO);
 
         specificationsRespository.save(specificationsConverter.convertToEntity(newSpecification));
         return newSpecification;
@@ -90,18 +79,11 @@ public class SpecificationServiceImpl implements SpecificationService{
 
     @Override
     public SpecificationDTO updateSpecification(UpdateSpecificationRequest request) {
-        ProductDTO productDTO = productService.getProductInfo(request.getProductId());
-        if (productDTO == null) {
-            throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this product to update this Specification");
-        }
-
         SpecificationDTO specificationDTO = findById(request.getSpecificationId());
         if (specificationDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this specification");
         }
-
         specificationDTO.setSpecificationsContent(request.getSpecificationsContent());
-        specificationDTO.setProduct(productDTO);
         specificationDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
 
         SpecificationEntity specificationEntity = specificationsConverter.convertToEntity(specificationDTO);

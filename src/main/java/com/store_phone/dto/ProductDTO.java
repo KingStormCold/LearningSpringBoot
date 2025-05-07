@@ -3,20 +3,35 @@ package com.store_phone.dto;
 import java.util.Set;
 
 public class ProductDTO extends BaseDTO {
+
 	private String productId;
+
     private String productName;
+
     private String sortDescription;
+
     private String content;
+
     private String image;
+
     private String originalPrice;
+
     private String discountPrice;
+
     private String infoBox;
+
     private String infoInsurance;
+
     private String total;
+
     private CategoryDTO category;
+
     private UserDTO user;
+
     private SpecificationDTO specifications;
+    
     private Set<ProductInfoDTO> productInfo;
+    
     private PreferentialDTO preferentialDTO;
 
 	public String getProductId() {
