@@ -15,7 +15,7 @@ public interface SpecificationService {
     ResultDataPaging<SpecificationResponse> findAll (Pageable pageable);
     SpecificationDTO getSpecificationDetail(String specificationId);
     SpecificationDTO findById(String specificationId);
-    SpecificationDTO addSpecification(AddSpecificationRequest request);
-    SpecificationDTO updateSpecification(UpdateSpecificationRequest request);
+    SpecificationResponse addSpecification(AddSpecificationRequest request);
+    SpecificationResponse updateSpecification(UpdateSpecificationRequest request);
     void deleteSpecification(String specificationId);
 }

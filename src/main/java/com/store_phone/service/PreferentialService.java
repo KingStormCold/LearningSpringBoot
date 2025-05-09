@@ -12,8 +12,8 @@ public interface PreferentialService {
     ResultDataPaging<PreferenceInfo> findAll (Pageable pageable);
     PreferentialDTO getPreferentialDetail(String preferentialId);
     PreferentialDTO findById(String preferentialId);
-    PreferentialDTO addPreferential(AddPreferenceRequest request);
-    PreferentialDTO updatePreferential(UpdatePreferenceRequest request);
+    PreferenceInfo addPreferential(AddPreferenceRequest request);
+    PreferenceInfo updatePreferential(UpdatePreferenceRequest request);
     void deletePreferential(String preferentialId);
 
 }

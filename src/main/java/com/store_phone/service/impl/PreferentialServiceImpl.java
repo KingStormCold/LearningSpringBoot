@@ -43,12 +43,12 @@ public class PreferentialServiceImpl implements PreferentialService{
 
     @Override
     public ResultDataPaging<PreferenceInfo> findAll(Pageable pageable) {
-        Page<PreferentialEntity> pagePreferentials = preferentialRespository.findAll(pageable);
+        Page<PreferentialEntity> pagePreferential = preferentialRespository.findAll(pageable);
 
-        List<PreferentialDTO> preferentialDTOS = pagePreferentials.getContent().stream()
+        List<PreferentialDTO> preferentialDTOS = pagePreferential.getContent().stream()
                 .map(preferentialEntity -> preferentialConverter.convertToDto(preferentialEntity)).toList();
 
-        Pagination pagination = new Pagination(pageable.getPageNumber(), pageable.getPageSize(), pagePreferentials.getTotalPages());
+        Pagination pagination = new Pagination(pageable.getPageNumber(), pageable.getPageSize(), pagePreferential.getTotalPages());
         List<PreferenceInfo> result = preferentialDTOS.stream().map(preferentialDTO -> new PreferenceInfo(preferentialDTO)).toList();
 
         return new ResultDataPaging<>(result, pagination);
@@ -73,21 +73,30 @@ public class PreferentialServiceImpl implements PreferentialService{
     }
 
     @Override
-    public PreferentialDTO addPreferential(AddPreferenceRequest request) {
+    public PreferenceInfo addPreferential(AddPreferenceRequest request) {
+        ProductDTO productDTO = productService.getProductInfo(request.getProductId());
+        if (productDTO == null) {
+            throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this product to create Preferential");
+        }
+
         PreferentialDTO newPreferential = new PreferentialDTO();
 
         newPreferential.setPreferentialId(UUID.randomUUID().toString());
         newPreferential.setContent(request.getContent());
         newPreferential.setCreatedBy(SecurityUtils.getCurrentUserLogin());
-        newPreferential.setProductId(request.getProductId());
+        newPreferential.setCreatedDate(LocalDateTime.now());
+        newPreferential.setProduct(productDTO);
 
-        preferentialRespository.save(preferentialConverter.convertToEntity(newPreferential));
+        PreferentialEntity preferentialEntity = preferentialConverter.convertToEntity(newPreferential);
+        preferentialRespository.save(preferentialEntity);
 
-        return newPreferential;
+        PreferentialDTO preferentialDTO = preferentialConverter.convertToDto(preferentialEntity);
+
+        return new PreferenceInfo(preferentialDTO);
     }
 
     @Override
-    public PreferentialDTO updatePreferential(UpdatePreferenceRequest request) {
+    public PreferenceInfo updatePreferential(UpdatePreferenceRequest request) {
         ProductDTO productDTO = productService.getProductInfo(request.getProductId());
         if (productDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this Product");
@@ -100,12 +109,13 @@ public class PreferentialServiceImpl implements PreferentialService{
 
         preferentialDTO.setContent(request.getContent());
         preferentialDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
-        preferentialDTO.setProductId(request.getProductId());
+        preferentialDTO.setProduct(productDTO);
+        preferentialDTO.setUpdatedDate(LocalDateTime.now());
 
         PreferentialEntity preferentialEntity = preferentialConverter.convertToEntity(preferentialDTO);
         preferentialRespository.save(preferentialEntity);
 
-        return preferentialConverter.convertToDto(preferentialEntity);
+        return new PreferenceInfo(preferentialConverter.convertToDto(preferentialEntity ));
     }
 
     @Override

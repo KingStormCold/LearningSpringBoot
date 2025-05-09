@@ -1,14 +1,11 @@
 package com.store_phone.controller.admin;
 
 import com.store_phone.dto.PreferentialDTO;
-import com.store_phone.dto.ProductDTO;
 import com.store_phone.request.preference.AddPreferenceRequest;
 import com.store_phone.request.preference.UpdatePreferenceRequest;
-import com.store_phone.request.product.UpdateProductRequest;
 import com.store_phone.response.CommonResponse;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.preference.PreferenceInfo;
-import com.store_phone.response.product.ProductInfo;
 import com.store_phone.service.PreferentialService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +33,13 @@ public class PreferentialController {
     }
 
     @PostMapping(value = "v1/preferential")
-    public ResponseEntity<CommonResponse<PreferentialDTO>> addPreferential (@Valid @RequestBody AddPreferenceRequest request) {
+    public ResponseEntity<CommonResponse<PreferenceInfo>> addPreferential (@Valid @RequestBody AddPreferenceRequest request) {
         return ResponseEntity.ok(new CommonResponse<>(preferentialService.addPreferential(request)));
     }
 
     @PutMapping(value = "v1/preferential")
     public ResponseEntity<CommonResponse<PreferenceInfo>> updatePreferential (@Valid @RequestBody UpdatePreferenceRequest request) {
-        PreferentialDTO preferentialDTO = preferentialService.updatePreferential(request);
-        PreferenceInfo preferenceInfo = new PreferenceInfo(preferentialDTO);
-        return ResponseEntity.ok(new CommonResponse<>(preferenceInfo));
+        return ResponseEntity.ok(new CommonResponse<>(preferentialService.updatePreferential(request)));
     }
 
     @DeleteMapping(value = "v1/preferential/{preferentialId}")

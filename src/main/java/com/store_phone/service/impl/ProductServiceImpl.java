@@ -96,9 +96,9 @@ public class ProductServiceImpl implements ProductService{
         userDTO.setUserName(SecurityUtils.getCurrentUserLogin());
         productDTO.setUser(userDTO);
 //        productDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin());
-//        productDTO.setUpdatedBy(null);
+        productDTO.setUpdatedBy(null);
         productDTO.setCreatedDate(LocalDateTime.now());
-//        productDTO.setUpdatedDate(null);
+        productDTO.setUpdatedDate(null);
 
         ProductEntity productEntity = productConverter.convertToEntity(productDTO);
         productRespository.save(productEntity);
@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductDTO updateProduct(UpdateProductRequest request) {
+    public ProductInfo updateProduct(UpdateProductRequest request) {
         CategoryDTO categoryDTO = categoryService.findById(request.getCategoryId());
         if (categoryDTO == null) {
             throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this Category");
@@ -126,11 +126,15 @@ public class ProductServiceImpl implements ProductService{
         productDTO.setInfoBox(request.getInfoBox());
         productDTO.setInfoInsurance(request.getInfoInsurance());
 
-        ProductEntity productEntity = productConverter.convertToEntity(productDTO);
+        productDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
+        productDTO.setUpdatedDate(LocalDateTime.now());
 
+        ProductEntity productEntity = productConverter.convertToEntity(productDTO);
         productRespository.save(productEntity);
 
-        return productConverter.convertToDto(productEntity);
+        ProductDTO response = productConverter.convertToDto(productEntity);
+
+        return new ProductInfo(response);
     }
 
     @Override

@@ -11,6 +11,6 @@ public interface ProductService {
     ResultDataPaging<ProductInfo> findAll(Pageable pageable);
     ProductDTO getProductInfo(String productId);
     ProductInfo addProduct (AddProductRequest request);
-    ProductDTO updateProduct (UpdateProductRequest request);
+    ProductInfo updateProduct (UpdateProductRequest request);
     void deleteProduct (String productId);
 }

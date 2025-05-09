@@ -1,14 +1,10 @@
 package com.store_phone.request.preference;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.store_phone.dto.ProductDTO;
 import com.store_phone.request.BaseRequest;
 import jakarta.validation.constraints.NotBlank;
 
 public class AddPreferenceRequest extends BaseRequest {
-    @JsonProperty("preferential_id")
-    @NotBlank(message = "Preferential Id cannot empty")
-    private String preferential_id;
 
     @JsonProperty("content")
     @NotBlank(message = "Content cannot empty")
@@ -17,14 +13,6 @@ public class AddPreferenceRequest extends BaseRequest {
     @JsonProperty("product_id")
     @NotBlank(message = "ProductId cannot be empty")
     private String productId;
-
-    public String getPreferential_id() {
-        return preferential_id;
-    }
-
-    public void setPreferential_id(String preferential_id) {
-        this.preferential_id = preferential_id;
-    }
 
     public String getProductId() {
         return productId;

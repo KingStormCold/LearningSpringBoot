@@ -9,6 +9,7 @@ public class PreferenceInfo extends BaseInfo {
     private String preferentialId;
     private String content;
     private String productId;
+    private String productName;
 
     public String getPreferentialId() {
         return preferentialId;
@@ -34,6 +35,14 @@ public class PreferenceInfo extends BaseInfo {
         this.productId = productId;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public PreferenceInfo(PreferentialDTO dto) {
         this.preferentialId = dto.getPreferentialId();
         this.content = dto.getContent();
@@ -42,5 +51,7 @@ public class PreferenceInfo extends BaseInfo {
         this.createdDate = dto.getCreatedDate();
         this.updatedBy = dto.getUpdatedBy();
         this.updatedDate = dto.getUpdatedDate();
+        this.productId = dto.getProduct().getProductId();
+        this.productName = dto.getProduct().getProductName();
     }
 }

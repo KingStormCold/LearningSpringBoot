@@ -39,9 +39,7 @@ public class ProductController {
 
     @PutMapping(value = "v1/product")
     public ResponseEntity<CommonResponse<ProductInfo>> updateProduct (@Valid @RequestBody UpdateProductRequest request) {
-        ProductDTO productDTO = productService.updateProduct(request);
-        ProductInfo productInfo = new ProductInfo(productDTO);
-        return ResponseEntity.ok(new CommonResponse<>(productInfo));
+        return ResponseEntity.ok(new CommonResponse<>(productService.updateProduct(request)));
     }
 
     @DeleteMapping(value = "v1/product/{productId}")

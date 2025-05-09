@@ -14,6 +14,17 @@ public class UpdateSpecificationRequest extends BaseRequest {
     @NotBlank(message = "Specifications content cannot empty")
     private String specificationsContent;
 
+    @JsonProperty("specifications_content")
+    private String productId;
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
     public String getSpecificationId() {
         return specificationId;
     }
