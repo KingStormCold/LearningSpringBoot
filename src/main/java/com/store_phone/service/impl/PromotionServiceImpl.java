@@ -2,7 +2,6 @@ package com.store_phone.service.impl;
 
 import com.store_phone.common.Constants;
 import com.store_phone.converter.PromotionConverter;
-import com.store_phone.dto.ProductDTO;
 import com.store_phone.dto.PromotionDTO;
 import com.store_phone.entity.PromotionEntity;
 import com.store_phone.exception.BadRequestException;
@@ -12,7 +11,6 @@ import com.store_phone.request.product.AddProductRequest;
 import com.store_phone.request.product.UpdateProductRequest;
 import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
-import com.store_phone.response.product.ProductInfo;
 import com.store_phone.response.promotion.PromotionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,8 +70,12 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public void deletePromotion(String productId) {
-
+    public void deletePromotion(String promotionId) {
+        PromotionDTO promotionDTO = findById(promotionId);
+        if (promotionDTO == null) {
+            throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this Promotion to delete");
+        }
+        promotionRespository.deleteById(promotionId);
     }
 
     private PromotionDTO findById(String promotionId) {

@@ -5,8 +5,35 @@ import java.util.Set;
 public class ProductInfoDTO extends BaseDTO {
 
 	private String productInfoId;
+	private Double price;
+	private Double total;
+	private Double originalPrice;
 
-    private ProductDTO product;
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	public Double getOriginalPrice() {
+		return originalPrice;
+	}
+
+	public void setOriginalPrice(Double originalPrice) {
+		this.originalPrice = originalPrice;
+	}
+
+	private ProductDTO product;
 
     private String productInfoName;
 
