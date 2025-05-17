@@ -10,6 +10,7 @@ import com.store_phone.service.ProductInfoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,4 +42,9 @@ public class ProductInfoController {
         return ResponseEntity.ok(new CommonResponse<>(productInfoService.updateProductInfo(request)));
     }
 
+    @DeleteMapping("v1/preferential/{productInfoId}")
+    public ResponseEntity<?> deleteById (@PathVariable("productInfoId") String productInfoId) {
+        productInfoService.deleteProductInfo(productInfoId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

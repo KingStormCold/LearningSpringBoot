@@ -46,7 +46,6 @@ public class PreferenceInfo extends BaseInfo {
     public PreferenceInfo(PreferentialDTO dto) {
         this.preferentialId = dto.getPreferentialId();
         this.content = dto.getContent();
-        this.productId = dto.getProduct().getProductId();
         this.createdBy = dto.getCreatedBy();
         this.createdDate = dto.getCreatedDate();
         this.updatedBy = dto.getUpdatedBy();

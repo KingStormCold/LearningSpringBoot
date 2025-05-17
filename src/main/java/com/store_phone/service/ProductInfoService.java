@@ -12,6 +12,6 @@ public interface ProductInfoService {
     ProductInfoDTO getProductInfo(String productInfoId);
     ProductInfoResponse addProductInfo (AddProductInfoRequest request);
     ProductInfoResponse updateProductInfo (UpdateProductInfoRequest request);
-    void deleteProduct (String productId);
+    void deleteProductInfo (String productId);
 
 }

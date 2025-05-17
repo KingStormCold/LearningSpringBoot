@@ -2,6 +2,7 @@ package com.store_phone.service.impl;
 
 import com.store_phone.common.Constants;
 import com.store_phone.converter.ProductInfoConverter;
+import com.store_phone.dto.PreferentialDTO;
 import com.store_phone.dto.ProductDTO;
 import com.store_phone.dto.ProductInfoDTO;
 import com.store_phone.entity.ProductInfoEntity;
@@ -14,6 +15,7 @@ import com.store_phone.response.Pagination;
 import com.store_phone.response.ResultDataPaging;
 import com.store_phone.response.product_info.ProductInfoResponse;
 import com.store_phone.service.ProductService;
+import com.store_phone.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.store_phone.service.ProductInfoService;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,13 +97,32 @@ public class ProductInfoServiceImpl implements ProductInfoService{
             throw new UnprocessableException(Constants.NOT_EMPTY,"Cannot find this product to create ProductInfo");
         }
 
+        ProductInfoDTO productInfoDTO = findById(request.getProductInfoId());
+        if (productInfoDTO == null) {
+            throw new UnprocessableException(Constants.NOT_FOUND, "Cannot find this ProductInfo to update");
+        }
 
-        return null;
+        productInfoDTO.setProductInfoName(request.getProductInfoName());
+        productInfoDTO.setPrice(request.getPrice());
+        productInfoDTO.setTotal(request.getTotal());
+        productInfoDTO.setOriginalPrice(request.getOriginal_price());
+        productInfoDTO.setProduct(productDTO);
+        productInfoDTO.setUpdatedBy(SecurityUtils.getCurrentUserLogin());
+        productInfoDTO.setUpdatedDate(LocalDateTime.now());
+
+        ProductInfoEntity productInfoEntity = productInfoConverter.convertToEntity(productInfoDTO);
+        productInfoRespository.save(productInfoEntity);
+
+        return new ProductInfoResponse(productInfoConverter.convertToDto(productInfoEntity));
     }
 
     @Override
-    public void deleteProduct(String productId) {
-
+    public void deleteProductInfo(String productInfoId) {
+        ProductInfoDTO productInfoDTO = findById(productInfoId);
+        if (productInfoDTO == null) {
+            throw new UnprocessableException(Constants.NOT_FOUND,"Cannot find this Product Info to remove");
+        }
+        productInfoRespository.deleteById(productInfoId);
     }
 
     private ProductInfoDTO findById(String productInfoId) {
